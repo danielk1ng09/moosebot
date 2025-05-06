@@ -1,0 +1,23 @@
+# Archivos de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Entorno virtual
+venv/
+.env
+
+# Archivos de configuración personales
+*.log
+*.txt
+
+# Archivos de Ngrok y ejecutables
+ngrok.exe
+ngrok.yml
+*.zip
+*.bat
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
