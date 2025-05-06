@@ -1,0 +1,19 @@
+
+[Chat: Integración IA para WhatsApp con Flask, Ngrok y Gupshup]
+Fecha de inicio: 25 de abril de 2025
+
+- Usuario inició integración de un chatbot con IA usando Flask.
+- Se configuraron variables de entorno (.env) para OpenAI y Gupshup.
+- Se probó el servidor Flask en local con puertos 5000 y 4040.
+- Se ejecutó Ngrok para exponer localmente la URL.
+- Se intentó registrar el webhook en Gupshup, pero marcaba error por URL inválida o método no permitido.
+- El usuario actualizó el código para aceptar JSON y ajustó el modelo OpenAI a "gpt-3.5-turbo".
+- Se detectó un error por límite de uso de OpenAI API (insufficient_quota).
+- El usuario generó archivos .bat para automatizar Flask y Ngrok.
+- Confirmó funcionamiento manual de los scripts.
+- Usuario expresó intención de automatizar más tras definir el guión de bienvenida del bot.
+- Se solicitó guardar toda la conversación.
+
+Asistente ofreció generar un archivo TXT con toda la plática.
+
+Estado final: scripts funcionando, en espera de saldo en OpenAI para continuar.

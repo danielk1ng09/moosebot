@@ -1,0 +1,97 @@
+import requests
+import os
+from openai import OpenAI
+from dotenv import load_dotenv
+from flask import Flask, request
+
+load_dotenv()
+
+app = Flask(__name__)
+
+# Cargar claves desde .env
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+GUPSHUP_API_KEY = os.getenv("GUPSHUP_API_KEY")
+SOURCE_NUMBER = os.getenv("SOURCE_NUMBER") # Ejemplo: 5214443921949
+
+# Ruta raíz para responder validaciones de Gupshup
+@app.route("/", methods=["GET", "POST"])
+def index():
+    return "Bot is running", 200
+
+# Ruta principal para recibir mensajes de Gupshup
+@app.route("/incoming", methods=["POST"])
+def incoming():
+    user_message = request.form.get("message") or (request.json.get("message") if request.is_json else None)
+    user_number = request.form.get("sender") or (request.json.get("sender") if request.is_json else None)
+
+    if not user_message:
+        return "No message", 400
+
+    try:
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo", # Puedes cambiar a "gpt-4o" si deseas
+            messages=[
+                {"role": "system", "content": """
+Eres MooseBot, el asistente oficial de Distribuidor Moose México.
+
+Tu función es atender prospectos interesados en la Retroexcavadora Moose MS308 2025, ofreciendo respuestas profesionales, confiables y muy cordiales.
+
+Contexto general:
+- Distribuidor Moose México es el distribuidor autorizado de Moose, una marca suiza con más de 20 años de experiencia en maquinaria.
+- Las máquinas son ensambladas en China, bajo estándares suizos de calidad.
+- La MS308 cuenta con:
+  - Motor Cummins Turbo Diesel QSB3.9-C110 (110 HP)
+  - Transmisión ZF
+  - Bomba hidráulica SEM-Caterpillar
+  - Cabina cerrada A/C, tracción 4x4
+  - Precio: $1,400,000 MXN (IVA incluido)
+
+Garantías:
+- 1 año o 1800 horas para la máquina (lo que ocurra primero)
+- 2 años en motor Cummins (Cummins Care)
+
+Ubicación:
+- Carretera Federal 57 Km 173+700, San Luis Potosí (cerca planta BMW)
+- Se permite inspección presencial con cita previa.
+
+Beneficios:
+- Flete gratis hasta 600 km o Martillo hidráulico 300 kg gratis en compra de contado o con financiamiento SOC.
+- Financiamiento Moose y opciones accesibles con SOC.
+
+Reglas de atención:
+- Responde cordial, profesional y en español neutro.
+- Nunca uses palabras como videollamadas, visitas virtuales o invitar a visitar páginas web.
+- No digas que eres fabricante, siempre aclara que eres distribuidor autorizado.
+- Si detectas intención de compra, puedes sugerir promociones, garantía, refacciones o agendar cita.
+"""},
+                {"role": "user", "content": user_message}
+            ]
+        )
+
+        reply = response.choices[0].message.content
+        print(f"Respuesta generada: {reply}")
+        send_message(user_number, reply)
+        return "ok", 200
+
+    except Exception as e:
+        print(f"Error procesando el mensaje: {e}")
+        return "Ocurrió un error interno. Por favor, inténtalo más tarde.", 500
+
+# Función para enviar mensajes por Gupshup
+def send_message(to, message):
+    url = "https://api.gupshup.io/sm/api/v1/msg"
+    headers = {
+        "apikey": GUPSHUP_API_KEY,
+        "Content-Type": "application/x-www-form-urlencoded"
+    }
+    data = {
+        "channel": "whatsapp",
+        "source": SOURCE_NUMBER,
+        "destination": to,
+        "message": message,
+        "src.name": "MooseBot"
+    }
+    requests.post(url, data=data, headers=headers)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000, debug=True)

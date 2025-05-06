@@ -1,0 +1,44 @@
+NGROK
+
+Tu servidor ya está expuesto públicamente por ngrok. La URL que debes usar es:
+
+https://e6b4-200-94-27-82.ngrok-free.app
+
+cd "E:\Dropbox\4. Heres Logistic\0. Moose Machinery Group\12 IA Whatsapp\6. gupshup"
+
+
+python app.py
+
+Ficha Tecnica Pdf
+https://drive.google.com/uc?export=download&id=1solJcjqA-4W6ux9GnQTl27CdXuRVKmGM
+
+Accesorios Frontales JPG
+https://drive.google.com/uc?export=download&id=1--8CknmS5J9AYKIbgNz61xcue1cm5smj
+
+Accesorios Traseros JPG
+https://drive.google.com/uc?export=download&id=1fo1MrPPrkrDcpfQz3AgmKk4J6QOIr4zg
+
+Comprativo JPG
+https://drive.google.com/uc?export=download&id=1QbMT2YWuS2GlEAtPFe-onpup_O1M76uz
+
+Contacto JPG
+https://drive.google.com/uc?export=download&id=1AdbtjNAIgGOoIFlvccGPvRh4uflDLS04
+
+Imagen de Credito JPG
+https://drive.google.com/uc?export=download&id=1ljIDDiTHh1O3hbkC9f4O5yAjNsS5KIb1
+
+Fotografias PDF
+https://drive.google.com/uc?export=download&id=1TyWUkoDYYZruwJ5nsDu6zpKFHVWUjfvH
+
+Imagen Sobre pedido JPG
+https://drive.google.com/uc?export=download&id=1gc5pv9ASneAIaxCn31o0ibxBDoph0Ipt
+
+Video Descripcion MS308 MP4
+https://drive.google.com/uc?export=download&id=13Du5G7ScQVLXEBBG0-Gei79IMxi9m8_j
+
+Video Martillo hdiraulico y Cambiador Rapido MS308 MP4
+https://drive.google.com/uc?export=download&id=13EIcD03XngdY17Y3mH6ORqHbd4VoOVqJ
+
+
+
+
