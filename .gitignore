@@ -23,7 +23,17 @@ ngrok.zip
 
 # Archivos ZIP u otros paquetes
 *.zip
+*.rar
+*.7z
 
-# Otros
+# Ejecutables y scripts
 *.bat
 *.exe
+
+# Archivos multimedia grandes
+*.mp4
+*.avi
+*.mov
+*.png
+*.jpg
+*.jpeg

@@ -1,6 +1,0 @@
-authtoken: 2wBnFqJ2C5zRcWOWncgdKxpbt4J_4CPRySesRNzXgK6b5xHoe
-version: "2"
-tunnels:
-  flaskbot:
-    addr: 5000
-    proto: http
