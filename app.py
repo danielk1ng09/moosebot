@@ -1,12 +1,18 @@
 from flask import Flask, request
 from twilio.twiml.messaging_response import MessagingResponse
+import openai
+import os
 import re
 
 app = Flask(__name__)
 
-# ---------------------------------------------
-# 1. Diccionario de medios (PDFs, imágenes, etc)
-# ---------------------------------------------
+# Configura la API key de OpenAI
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+# Historial por número
+conversation_history = {}
+
+# Diccionario de medios
 DOCS = {
     "ficha": "https://drive.google.com/uc?export=download&id=1solJcjqA-4W6ux9GnQTl27CdXuRVKmGM",
     "fotos": "https://drive.google.com/uc?export=download&id=1TyWUkoDYYZruwJ5nsDu6zpKFHVWUjfvH",
@@ -28,14 +34,19 @@ WELCOME_MSG = (
     "3️⃣ Financiamiento\n"
     "4️⃣ Garantías\n"
     "5️⃣ Comparativo con Cat\n\n"
-    "Responde con el número o palabra clave 😊"
+    "O puedes hacerme cualquier pregunta 😊"
 )
 
 @app.route("/webhook", methods=["POST"])
 def whatsapp_webhook():
-    text_in = request.form.get("Body", "").lower()
+    user_number = request.form.get("From", "")
+    text_in = request.form.get("Body", "").strip().lower()
     response = MessagingResponse()
     msg = response.message()
+
+    # Inicializa historial si no existe
+    if user_number not in conversation_history:
+        conversation_history[user_number] = []
 
     # Bienvenida
     if text_in in ("hola", "hi", "buenas"):
@@ -66,7 +77,19 @@ def whatsapp_webhook():
         cost = extra_km * 125
         msg.body(f"La ruta es de {km} km. Cubrimos 600 km gratis.\nExcedente: {extra_km} km × $125 = ${cost:,.0f} MXN + IVA.")
     else:
-        msg.body("No entendí tu solicitud. Por favor responde con un número del 1 al 5 o la palabra clave del tema.")
+        # Respuesta generada por OpenAI
+        conversation_history[user_number].append({"role": "user", "content": text_in})
+        try:
+            completion = openai.ChatCompletion.create(
+                model="gpt-4",
+                messages=conversation_history[user_number],
+                max_tokens=500
+            )
+            reply = completion.choices[0].message["content"]
+            conversation_history[user_number].append({"role": "assistant", "content": reply})
+            msg.body(reply)
+        except Exception as e:
+            msg.body("Ocurrió un error al generar la respuesta. Por favor intenta más tarde.")
 
     return str(response)
 
