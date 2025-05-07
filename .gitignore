@@ -37,3 +37,4 @@ ngrok.zip
 *.png
 *.jpg
 *.jpeg
+.env
